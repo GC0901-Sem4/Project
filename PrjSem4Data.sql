@@ -12,77 +12,77 @@ create table tbUser
 	UserAddress varchar(255),
 	email nvarchar(255),
 	birthday date,
-	roleID int
+	roleID int references role(roleID)
 )
 
 create table role
 (
-	roleID int,
+	roleID int identity primary key,
 	roleName varchar(255)
 )
 
 create table complaint
 (
-	complaintID int primary key,
+	complaintID int identity primary key,
 	title nvarchar(255),
 	complaintDescription nvarchar(255),
-	assignerID int,
-	statusID varchar(10),
-	createrID int,
+	assignerID int references tbUser(userID),
+	statusID int references status(statusID),
+	createrID int references tbUser(userID),
 )
 
 create table request
 (
-	requestID int primary key,
-	requestor varchar(50),
-	instructor varchar(50),
+	requestID int identity primary key,
+	requestor int references tbUser(userID),
+	instructor int references tbUser(userID),
 	title nvarchar(255),
 	requestDescription nvarchar(255),
-	timeTableID int,
+	timeTableID int references timetable(timeTableID),
 	statusID varchar(10)
 )
 
 create table status
 (
-	statusID int primary key,
+	statusID int identity primary key,
 	statusName varchar(50)
 )
 
 create table timetable
 (
-	timeTableID int primary key,
+	timeTableID int identity primary key,
 	startTime datetime,
 	endTime datetime,
-	labID int,
-	classID int,
+	labID int references lab(labID),
+	classID int references classes(classID),
 	labStatus varchar(10) check (labStatus='on' or labStatus='off') default ('off')
 )
 
 create table lab
 (
-	labID int primary key,
+	labID int identity primary key,
 	labName varchar(50),
 )
 
 create table classes
 (
-	classID int primary key,
+	classID int identity primary key,
 	className varchar(50),
-	departmentID int,
+	departmentID int references department(departmentID),
 	amountTime int
 )
 
 create table resources
 (
-	resourceID int primary key,
+	resourceID int identity primary key,
 	resourceName varchar(255),
-	labID int,
+	labID int references lab(labID),
 	quantity int,
 	resourceStatus varchar(10) check (resourceStatus='on' or resourceStatus='off') default ('off')
 )
 
 create table department
 (
-	departmentID int primary key,
+	departmentID int identity primary key,
 	departmantName nvarchar(50)
 )
