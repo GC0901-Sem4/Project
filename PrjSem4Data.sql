@@ -86,3 +86,71 @@ create table department
 	departmentID int identity primary key,
 	departmantName nvarchar(50)
 )
+
+select * from tbUser
+select * from role
+select * from complaint
+select * from request
+select * from status
+select * from timetable
+select * from lab
+select * from classes
+select * from resources
+select * from department
+
+insert into tbUser values
+('admin1','123456','A City','user1@gmail.com','January 10, 1995',1),
+
+insert into role values
+('Admin'),
+('HOD'),
+('Instructor'),
+('Technical Staff'),
+('Student')
+
+insert into complaint values
+(),
+(),
+(),
+(),
+()
+
+insert into request values
+(),
+(),
+(),
+(),
+()
+
+insert into status values
+('Pending'),
+('Done'),
+('Reject')
+
+insert into timetable values
+(),
+(),
+(),
+()
+
+insert into lab values
+(''),
+(''),
+('')
+
+insert into classes values
+(),
+(),
+(),
+()
+
+insert into resources values
+(),
+(),
+(),
+()
+
+insert into department values
+('A'),
+('B'),
+('C')
