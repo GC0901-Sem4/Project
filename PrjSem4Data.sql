@@ -71,6 +71,16 @@ create table timetable
 	labStatus varchar(10) check (labStatus='on' or labStatus='off') default ('off')
 )
 
+create table labOrder
+(
+	labOrderID int identity primary key,
+	title nvarchar(255),
+	labOrderDescription nvarchar(255),
+	assignerID int references tbUser(userID),
+	statusID int references status(statusID),
+	createrID int references tbUser(userID),
+)
+
 create table request
 (
 	requestID int identity primary key,
@@ -79,7 +89,10 @@ create table request
 	title nvarchar(255),
 	requestDescription nvarchar(255),
 	timeTableID int references timetable(timeTableID),
-	statusID varchar(10)
+	statusID varchar(10),
+	labOrderID int references labOrder(labOrderID),
+	departmentID int references department(departmentID),
+	complaintID int references complaint(complaintID)
 )
 
 
@@ -93,6 +106,8 @@ create table resources
 	quantity int,
 	resourceStatus varchar(10) check (resourceStatus='on' or resourceStatus='off') default ('off')
 )
+
+
 
 
 select * from tbUser
