@@ -4,6 +4,13 @@ go
 use ACLData
 go
 
+
+create table role
+(
+	roleID int identity primary key,
+	roleName varchar(255)
+)
+
 create table tbUser
 (
 	userID int identity primary key,
@@ -15,11 +22,19 @@ create table tbUser
 	roleID int references role(roleID)
 )
 
-create table role
+create table lab
 (
-	roleID int identity primary key,
-	roleName varchar(255)
+	labID int identity primary key,
+	labName varchar(50),
 )
+
+
+create table status
+(
+	statusID int identity primary key,
+	statusName varchar(50)
+)
+
 
 create table complaint
 (
@@ -29,6 +44,31 @@ create table complaint
 	assignerID int references tbUser(userID),
 	statusID int references status(statusID),
 	createrID int references tbUser(userID),
+)
+
+
+create table department
+(
+	departmentID int identity primary key,
+	departmantName nvarchar(50)
+)
+
+create table classes
+(
+	classID int identity primary key,
+	className varchar(50),
+	departmentID int references department(departmentID),
+	amountTime int
+)
+
+create table timetable
+(
+	timeTableID int identity primary key,
+	startTime datetime,
+	endTime datetime,
+	labID int references lab(labID),
+	classID int references classes(classID),
+	labStatus varchar(10) check (labStatus='on' or labStatus='off') default ('off')
 )
 
 create table request
@@ -42,35 +82,8 @@ create table request
 	statusID varchar(10)
 )
 
-create table status
-(
-	statusID int identity primary key,
-	statusName varchar(50)
-)
 
-create table timetable
-(
-	timeTableID int identity primary key,
-	startTime datetime,
-	endTime datetime,
-	labID int references lab(labID),
-	classID int references classes(classID),
-	labStatus varchar(10) check (labStatus='on' or labStatus='off') default ('off')
-)
 
-create table lab
-(
-	labID int identity primary key,
-	labName varchar(50),
-)
-
-create table classes
-(
-	classID int identity primary key,
-	className varchar(50),
-	departmentID int references department(departmentID),
-	amountTime int
-)
 
 create table resources
 (
@@ -81,11 +94,6 @@ create table resources
 	resourceStatus varchar(10) check (resourceStatus='on' or resourceStatus='off') default ('off')
 )
 
-create table department
-(
-	departmentID int identity primary key,
-	departmantName nvarchar(50)
-)
 
 select * from tbUser
 select * from role
