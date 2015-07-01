@@ -1,0 +1,183 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns="http://www.w3.org/1999/xhtml"
+                template="../cdn/template/template.xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:c="http://java.sun.com/jsp/jstl/core" >
+    
+            <ui:define name="header">
+                <script type="text/javascript">
+    
+        </script>
+    </ui:define>    
+<ui:define name="wrapper">
+    <div class="wrapper">
+        <!-- Left navigation -->
+        <div class="leftNav">
+            <ul id="menu">
+                 <li class="login"><a  href="#{request.contextPath}/faces/administrator/signList.xhtml" title="" ><span>Sign List</span><span class="numberLeft"> #{staticBean.countSignLab}</span></a>
+                </li>
+                <li class="login"><a  href="#{request.contextPath}/faces/administrator/userList.xhtml" title=""><span>User Management  </span><span class="numberLeft"> #{staticBean.countUser}</span></a></li>
+                <li class="graphs" ><a   href="#{request.contextPath}/faces/administrator/viewStatic.xhtml" title=""><span>View Lab Static </span><span class="numberLeft"> #{staticBean.countLab}</span></a></li>
+                <li class="files"><a  href="#{request.contextPath}/faces/administrator/labList.xhtml" title=""><span>Lab Management  </span><span class="numberLeft"> #{staticBean.countLab}</span></a></li>
+                <li class="files"><a  href="#{request.contextPath}/faces/administrator/deviceList.xhtml" title=""><span>Device Management  </span><span class="numberLeft"> #{staticBean.countDevice}</span></a></li>
+                <li class="pic"><a  class="active" href="#{request.contextPath}/faces/administrator/reportList.xhtml" title=""><span>Report List</span><span class="numberLeft"> #{staticBean.countReport}</span></a></li>
+            </ul>
+        </div>
+        
+        <!-- Content -->
+        <div class="content">
+                <!-- NOTIFY ERROR -->
+                       <!-- NOTIFY ERROR -->
+                       <h:panelGroup rendered="#{reportListBean.message.hasInfo}">
+                           <div class="nNote nInformation hideit">
+                               <p><strong>INFORMATION: </strong>#{reportListBean.message.print}.</p>
+                           </div>
+                       </h:panelGroup>
+                       <h:panelGroup rendered="#{reportListBean.message.hasError}">
+                           <div class="nNote nFailure hideit">
+                               <p><strong>FAILURE: </strong>#{reportListBean.message.print}</p>
+                           </div>
+                       </h:panelGroup>
+                       <h:panelGroup rendered="#{reportListBean.message.hasSuccess}">
+                           <div class="nNote nSuccess hideit">
+                               <p><strong>SUCCESS: </strong>  #{reportListBean.message.print} </p>
+                           </div>
+                       </h:panelGroup>
+                <h:panelGroup rendered="#{reportBean.message.hasInfo}">
+                           <div class="nNote nInformation hideit">
+                               <p><strong>INFORMATION: </strong>#{reportBean.message.print}.</p>
+                           </div>
+                       </h:panelGroup>
+                       <h:panelGroup rendered="#{reportBean.message.hasError}">
+                           <div class="nNote nFailure hideit">
+                               <p><strong>FAILURE: </strong>#{reportBean.message.print}</p>
+                           </div>
+                       </h:panelGroup>
+                       <h:panelGroup rendered="#{reportBean.message.hasSuccess}">
+                           <div class="nNote nSuccess hideit">
+                               <p><strong>SUCCESS: </strong>  #{reportBean.message.print} </p>
+                           </div>
+                       </h:panelGroup>
+              <h:form id="searchList" styleClass="mainForm">
+              <fieldset>
+                <div class="widget">
+                    <div class="head"><h5 class="iList">View Report List</h5></div>
+                    <div class="floatleft" style="margin-bottom: 10px;width: 200px;">
+                        <div class="rowElem noborder pb0">
+                          <label class="topLabel">Created  Date</label>
+                          <h:inputText  styleClass="datepicker" value="#{reportListBean.startDate}"/>
+                        </div>
+                    </div>
+                  <div class="floatleft" style="margin-bottom: 10px;width: 200px;">
+                        <div class="rowElem noborder pb0">
+                          <label class="topLabel">Complete Date</label>
+                          <h:inputText styleClass="datepicker"  value="#{reportListBean.endDate}"/>
+                        </div>
+
+                    </div>
+                    <div class="floatleft">
+                        <div class="rowElem noborder pb0">
+                            <label class="topLabel">Status</label>
+                            <label style="margin-left: -90px;" class="topLabel"> </label>
+                        </div>
+                    </div>
+                   <div class="floatleft" >
+                  <h:selectOneMenu value="#{reportListBean.status}">
+                <f:selectItem  itemLabel="All" itemValue="All"></f:selectItem>
+                    <f:selectItem  itemLabel="In Process" itemValue="In Process"></f:selectItem>
+                    <f:selectItem  itemLabel="Confirm" itemValue="Confirm"></f:selectItem>
+                    <f:selectItem  itemLabel="Done" itemValue="Done"></f:selectItem>
+                </h:selectOneMenu>      
+                       
+                       <h:commandButton value="Search" action="#{reportListBean.searchReport()}"  styleClass="greyishBtn submitForm"/>
+                    </div>
+                    <div class="fix"></div>
+                </div>
+            </fieldset>
+         </h:form>
+        <!-- ALL USERS TABLE  -->
+        <div>
+        <h:form id="frmUser">
+            <div class="table">
+                <div class="head"><h5 class="iFrames">Report List </h5></div>
+                <table cellpadding="0" cellspacing="0" border="0" class="display" id="example">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th> Device </th>
+                            <th> LabID </th>
+                            <th> Sender </th>
+                            <th> Create Date </th>
+                            <th> Status </th>
+                            <th> Technician </th>
+                            <th> Complete Date </th>
+                            <th> Details </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <ui:repeat value="#{reportListBean.getReportByAdmin()}" var="report">
+                            <tr>
+                                <td class="center">
+                                   <h:commandLink value="#{report.id}" action="reportInfo.xhtml" 
+                                       actionListener="#{reportBean.getReportByID(report.id)}"/>
+                                </td>
+                                <td class="center"> <b>  <h:commandLink value="#{report.device.name}" action="deviceInfo" 
+                                       actionListener="#{deviceBean.getDeviceByID(report.device.id)}">
+                                            
+                                             <input type="button" value="VIEW" class="seaBtn" />
+                                             
+                                  </h:commandLink></b> </td>
+                                <td class="center">
+                                  <h:commandLink value="#{report.device.lab.id}" action="labInfo.xhtml" 
+                                       actionListener="#{labBean.getLabByID(report.device.lab.id)}">
+                                      <input type="button" value="VIEW" class="blackBtn" />
+                                  </h:commandLink>
+                                </td>
+                                <td class="center">
+                                    <h:commandLink value="#{report.userBySender.name}" action="userInfo.xhtml" 
+                                       actionListener="#{userBean.getUserByID(report.userBySender.id)}">
+                                        <input type="button" value="VIEW" class="greenBtn" />
+                                    </h:commandLink>
+                                </td>
+                                  <td class="center">
+                                  <h:outputText value="#{report.createDate}">
+                                  <f:convertDateTime pattern="HH:mm MM/dd/yyyy" />
+                                     </h:outputText>
+                                </td>
+                                 <td class="center">
+                                     <h:outputText value="#{report.status}" style="text-transform: uppercase;font-weight: bold;"/>
+                                </td>
+                                <td class="center">
+                                      <h:commandLink value="#{report.userByTechnician.name}" action="userInfo.xhtml" 
+                                                     actionListener="#{userBean.getUserByID(report.userByTechnician.id)}" rendered="#{report.userByTechnician.id != NULL}">
+                                          <input type="button" value="VIEW" class="blueBtn" />
+                                      </h:commandLink>
+                                </td>
+                                 <td class="center">
+                                    <h:outputText value="#{report.endDate}">
+                            <f:convertDateTime pattern="HH:mm MM/dd/yyyy" />
+                        </h:outputText>
+                                </td>
+                                <td class="center">
+                                    <h:commandButton value="DETAIL" action="reportInfo.xhtml" style="margin-top:10px;"
+                                                      actionListener="#{reportBean.getReportByID(report.id)}" styleClass="greenBtn"/>
+                                    <br/>
+                                      <h:commandButton value="DELETE" action="#{reportBean.delete(report.id)}" style="margin-top:10px;"
+                                                      styleClass="redBtn"/>
+                                </td>
+                            </tr>
+                        </ui:repeat>
+                    </tbody>
+                </table>
+            </div>
+         </h:form>
+        </div>
+<!-- EXP USERS  -->
+        </div>
+        <div class="fix"></div>
+    </div>
+ </ui:define>
+</ui:composition>

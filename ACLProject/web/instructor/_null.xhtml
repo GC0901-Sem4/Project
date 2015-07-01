@@ -1,0 +1,160 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns="http://www.w3.org/1999/xhtml"
+                template="../cdn/template/template.xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:c="http://java.sun.com/jsp/jstl/core" >
+<ui:define name="wrapper">
+    <div class="wrapper">
+        <!-- Left navigation -->
+        <div class="leftNav">
+            <ul id="menu">
+                <li class="login"><a class="active" href="#{request.contextPath}/faces/instructor/freeLab.xhtml" title="" ><span>Free Lab</span>
+                    </a>
+                </li>
+                <li class="files"><a href="#{request.contextPath}/faces/instructor/mySign.xhtml" title=""><span>My Sign </span></a></li>
+                <li class="graphs"><a href="#{request.contextPath}/faces/instructor/report.xhtml" title=""><span>Report</span></a></li>
+                <li class="cal"><a href="#{request.contextPath}/faces/instructor/myReportList.xhtml" title=""><span> My Report </span></a></li>
+            </ul>
+        </div>
+        <!-- Content -->
+        <div class="content">
+                <!-- NOTIFY ERROR -->
+            <h:panelGroup rendered="#{signListBean.message.hasInfo}">
+                    <div class="nNote nInformation hideit">
+                    <p><strong>INFORMATION: </strong>#{signListBean.message.print}.</p>
+                </div>
+            </h:panelGroup>
+                
+            <h:panelGroup rendered="#{signListBean.message.hasError}">
+                    <div class="nNote nFailure hideit">
+                      <p><strong>FAILURE: </strong>#{signListBean.message.print}</p>
+                  </div>
+            </h:panelGroup>
+            <h:panelGroup rendered="#{signListBean.message.hasSuccess}">
+               <div class="nNote nSuccess hideit">
+                     <p><strong>SUCCESS: </strong>  #{signListBean.message.print} </p>
+               </div>
+            </h:panelGroup>
+                
+            <h:panelGroup rendered="#{userBean.message.hasInfo}">
+                    <div class="nNote nInformation hideit">
+                    <p><strong>INFORMATION: </strong>#{userBean.message.print}.</p>
+                </div>
+            </h:panelGroup>
+                
+            <h:panelGroup rendered="#{userBean.message.hasError}">
+                    <div class="nNote nFailure hideit">
+                      <p><strong>FAILURE: </strong>#{userBean.message.print}</p>
+                  </div>
+            </h:panelGroup>
+            <h:panelGroup rendered="#{userBean.message.hasSuccess}">
+               <div class="nNote nSuccess hideit">
+                     <p><strong>SUCCESS: </strong>  #{userBean.message.print} </p>
+               </div>
+            </h:panelGroup>
+                                
+                
+              <h:form id="searchList" styleClass="mainForm">
+              <fieldset>
+                <div class="widget">
+                    <div class="head"><h5 class="iList">Sign List Search</h5></div>
+                    <div class="floatleft" style="margin-bottom: 10px;">
+                        <div class="rowElem noborder pb0">
+                            <label class="topLabel">Use Date</label>
+                            <h:inputText  value="#{signListBean.useDate}" styleClass="datepicker"/>
+                        </div>
+        
+                    </div>
+                    <div class="floatleft">
+                        <div class="rowElem noborder pb0">
+                            <label class="topLabel">Type</label>
+                            <label style="margin-left: -90px;" class="topLabel">Time Slot</label>
+                        </div>
+                    </div>
+                   <div class="floatleft" >
+                             <h:selectOneMenu value="#{signListBean.status}">
+                                <f:selectItem  itemLabel="All" itemValue="All"></f:selectItem>
+                                <f:selectItem  itemLabel="Request" itemValue="Request"></f:selectItem>
+                                <f:selectItem  itemLabel="Deny" itemValue="Deny"></f:selectItem>
+                                <f:selectItem  itemLabel="Approve" itemValue="Approve"></f:selectItem>
+                                <f:selectItem  itemLabel="Done" itemValue="Done"></f:selectItem>
+                            </h:selectOneMenu>
+                       
+                       <h:selectOneMenu value="#{signListBean.timeTableId}">
+                                    <f:selectItem  itemLabel="All" itemValue="All"></f:selectItem>
+                                    <f:selectItem  itemLabel="T1: 7:30 - 9:30" itemValue="T1"></f:selectItem>
+                                    <f:selectItem  itemLabel="T2: 9:30 - 11:30" itemValue="T2"></f:selectItem>
+                                    <f:selectItem  itemLabel="T3: 13:30 - 15:30" itemValue="T3"></f:selectItem>
+                                    <f:selectItem  itemLabel="T4: 15:30 - 17:30" itemValue="T4"></f:selectItem>
+                      </h:selectOneMenu>
+                      <h:commandButton value="Search" action="#{signListBean.searchSignLab}"   styleClass="greyishBtn submitForm"/>
+                    </div>
+                    <div class="fix"></div>
+                </div>
+            </fieldset>
+         </h:form>
+        <!-- ALL USERS TABLE  -->
+        <div>
+        <h:form id="frmUser">
+            <div class="table">
+                <div class="head"><h5 class="iFrames">Sign List </h5></div>
+                <table cellpadding="0" cellspacing="0" border="0" class="display" id="example">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th> Sign Name </th>
+                            <th> Lab ID </th>
+                            <th> Create Date </th>
+                             <th> Time Table</th>
+                             <th> Use Date </th>
+                             <th> Status </th>
+                             <th> Action </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <ui:repeat value="#{signListBean.signLabByAdmin}" var="sign">
+                            <tr class="#{sign.grade}">
+                                <td class="center">#{sign.id}</td>
+                                <td class="center">
+                                    <h:commandLink value=""  action="#{userBean.goToUserInfo}" actionListener="#{userBean.getUserByID(sign.user.id)}">
+                                        #{sign.user.name}
+                                        <input type="button" value="VIEW" class="blueBtn" />
+                                    </h:commandLink>
+                                </td>
+                                <td class="center">
+                                     <h:commandLink value="" action="#{labBean.goToLabInfo}" actionListener="#{labBean.getLabByID(sign.lab.id)}">
+                                        #{sign.lab.id}
+                                         <input type="button" value="VIEW" class="blueBtn" />
+                                     </h:commandLink>
+                                </td>
+                                <td class="center"> <b> #{sign.createDate} </b> </td>
+                                <td class="center">#{sign.timeTable.id}</td>
+                                <td class="center"><b> #{sign.useDate} </b> </td>
+                                            <td class="center"> <span style="text-transform: uppercase;font-weight: bold" > #{sign.status}</span> </td>
+                                <td class="center">
+                                    
+                                    <h:commandButton  styleClass="greyishBtn"  value="DENY"  style="margin-top: 5px;width: 78px"   actionListener="#{signLabBean.denySignLab}" action="#{signLabBean.updateSignLab()}" rendered="#{dateUlti.futureDate(sign.useDate)}">
+                                    <f:param id="signDenyID" name="signID" value="#{sign.id}"/>                            
+                                </h:commandButton>
+                                    
+                                    <h:commandButton  styleClass="greenBtn"  value="APPROVE"  style="margin-top: 5px;width: 78px"   actionListener="#{signLabBean.approveSignLab}" action="#{signLabBean.updateSignLab()}"  rendered="#{dateUlti.futureDate(sign.useDate)  &amp;&amp; signLabBean.checkFreeLab(sign.lab.id,sign.timeTable.id,sign.useDate)}"  >
+                                    <f:param  id="signApproveID" name="signID" value="#{sign.id}"/>                         
+                                </h:commandButton>
+                                    
+                                 </td>
+                        </tr>
+                        </ui:repeat>
+                    </tbody>
+                </table>
+            </div>
+         </h:form>
+        </div>
+<!-- EXP USERS  -->
+        </div>
+        <div class="fix"></div>
+    </div>
+ </ui:define>
+</ui:composition>

@@ -1,0 +1,96 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns="http://www.w3.org/1999/xhtml"
+                template="../cdn/template/template.xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:c="http://java.sun.com/jsp/jstl/core" >
+    <ui:define name="header">
+       <script type="text/javascript">
+        $(document).ready(function() {
+            $("#frmSign").validationEngine()
+        })
+	</script>
+    </ui:define>
+<ui:define name="wrapper">
+    <div class="wrapper">
+        <!-- Left navigation -->
+        <div class="leftNav">
+                  <ul id="menu">
+                    <li class="login"><a class="active" href="#{request.contextPath}/faces/instructor/freeLab.xhtml" title="" ><span>Free Lab</span>
+                        </a>
+                    </li>
+                    <li class="files"><a href="#{request.contextPath}/faces/instructor/mySign.xhtml" title=""><span>My Sign </span></a></li>
+                    <li class="graphs"><a href="#{request.contextPath}/faces/instructor/report.xhtml" title=""><span>Report</span></a></li>
+                    <li class="cal"><a href="#{request.contextPath}/faces/instructor/myReportList.xhtml" title=""><span> My Report </span></a></li>
+                </ul>
+        </div>
+        <!-- Content -->
+        <div class="content">
+                <!-- NOTIFY ERROR -->
+                                 <h:panelGroup rendered="#{signLabBean.message.hasInfo}">
+                           <div class="nNote nInformation hideit">
+                               <p><strong>INFORMATION: </strong>#{signLabBean.message.print}.</p>
+                           </div>
+                       </h:panelGroup>
+                       <h:panelGroup rendered="#{signLabBean.message.hasError}">
+                           <div class="nNote nFailure hideit">
+                               <p><strong>FAILURE: </strong>#{signLabBean.message.print}</p>
+                           </div>
+                       </h:panelGroup>
+                       <h:panelGroup rendered="#{signLabBean.message.hasSuccess}">
+                           <div class="nNote nSuccess hideit">
+                               <p><strong>SUCCESS: </strong>  #{signLabBean.message.print} </p>
+                           </div>
+                       </h:panelGroup>
+                
+        <!-- ALL USERS TABLE  -->
+        <div>
+        <h:form id="frmUser" styleClass="mainForm">
+             <div class="widget">
+                            <div class="head"><h5 class="iLocked2">Sign Lab </h5></div>
+                       <div class="rowElem noborder">
+                                <label style="font-weight: bold"> Lab ID </label>
+                                <div class="formRight">
+                                  <h:inputText id="id" value="#{signLabBean.labID}"/>
+                                </div>
+                                <div class="fix"></div>
+                        </div>
+                            <div class="rowElem">
+                                <label style="font-weight: bold"> Use Date  </label>
+                                <div class="formRight">
+                                    <h:inputText id="useDate" value="#{signLabBean.useDate}" styleClass="datepicker" />
+                                </div>
+                                <div class="fix"></div>
+                            </div>
+                             <div class="rowElem">
+                                <label style="font-weight: bold"> TimeSlot  </label>
+                                <div class="formRight">
+                                <h:selectOneMenu value="#{signLabBean.timeTableID}">
+                                    <f:selectItem  itemLabel="T1: 7:30 - 9:30" itemValue="T1"></f:selectItem>
+                                    <f:selectItem  itemLabel="T2: 9:30 - 11:30" itemValue="T2"></f:selectItem>
+                                    <f:selectItem  itemLabel="T3: 13:30 - 15:30" itemValue="T3"></f:selectItem>
+                                    <f:selectItem  itemLabel="T4: 15:30 - 17:30" itemValue="T4"></f:selectItem>
+                                </h:selectOneMenu>
+                                </div>
+                                <div class="fix"></div>
+                            </div>
+                               <div class="rowElem">
+                                <label style="font-weight: bold"> Content  </label>
+                                <div class="formRight">
+                                    <h:inputTextarea id="content" value="#{signLabBean.content}"/>
+                                </div>
+                                <div class="fix"></div>
+                            </div>
+                            <h:commandButton id="submit" value="DO SIGN" action="#{signLabBean.doSignLab()}" styleClass="greyishBtn submitForm"/>
+                            <div class="fix"></div>
+            </div>
+         </h:form>
+        </div>
+<!-- EXP USERS  -->
+        </div>
+        <div class="fix"></div>
+    </div>
+ </ui:define>
+</ui:composition>

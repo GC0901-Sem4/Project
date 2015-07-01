@@ -1,0 +1,123 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns="http://www.w3.org/1999/xhtml"
+                template="../cdn/template/template.xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:c="http://java.sun.com/jsp/jstl/core" >
+                <ui:define name="header">
+              
+    </ui:define>
+<ui:define name="wrapper">
+    <div class="wrapper">
+        <!-- Left navigation -->
+        <div class="leftNav">
+            <ul id="menu">
+               <li class="login"><a  href="#{request.contextPath}/faces/administrator/signList.xhtml" title="" ><span>Sign List</span><span class="numberLeft"> #{staticBean.countSignLab}</span></a>
+                </li>
+                <li class="login"><a  href="#{request.contextPath}/faces/administrator/userList.xhtml" title=""><span>User Management  </span><span class="numberLeft"> #{staticBean.countUser}</span></a></li>
+                <li class="graphs" ><a   href="#{request.contextPath}/faces/administrator/viewStatic.xhtml" title=""><span>View Lab Static </span><span class="numberLeft"> #{staticBean.countLab}</span></a></li>
+                <li class="files"><a  href="#{request.contextPath}/faces/administrator/labList.xhtml" title=""><span>Lab Management  </span><span class="numberLeft"> #{staticBean.countLab}</span></a></li>
+                <li class="files"><a  href="#{request.contextPath}/faces/administrator/deviceList.xhtml" title=""><span>Device Management  </span><span class="numberLeft"> #{staticBean.countDevice}</span></a></li>
+                <li class="pic"><a  href="#{request.contextPath}/faces/administrator/reportList.xhtml" title=""><span>Report List</span><span class="numberLeft"> #{staticBean.countReport}</span></a></li>
+            </ul>
+        </div>
+        <!-- Content -->
+        <div class="content">
+                <!-- NOTIFY ERROR -->
+            <h:panelGroup rendered="#{signListBean.message.hasInfo}">
+                    <div class="nNote nInformation hideit">
+                    <p><strong>INFORMATION: </strong>#{signListBean.message.print}.</p>
+                </div>
+            </h:panelGroup>
+            <h:panelGroup rendered="#{signListBean.message.hasError}">
+                    <div class="nNote nFailure hideit">
+                      <p><strong>FAILURE: </strong>#{signListBean.message.print}</p>
+                  </div>
+            </h:panelGroup>
+            <h:panelGroup rendered="#{signListBean.message.hasSuccess}">
+               <div class="nNote nSuccess hideit">
+                     <p><strong>SUCCESS: </strong>  #{signListBean.message.print} </p>
+               </div>
+            </h:panelGroup>
+                
+              <h:form id="searchList" styleClass="mainForm">
+              <fieldset>
+                <div class="widget">
+                    <div class="head"><h5 class="iList">Sign List Search</h5></div>
+                    <div class="floatleft" style="margin-bottom: 10px;width: 200px;">
+                        <div class="rowElem noborder pb0">
+                          <label class="topLabel">Start Date</label>
+                          <h:inputText  styleClass="datepicker" value="#{staticBean.startDate}"/>
+                        </div>
+                    </div>
+                  <div class="floatleft" style="margin-bottom: 10px;width: 200px;">
+                        <div class="rowElem noborder pb0">
+                          <label class="topLabel">End Date</label>
+                          <h:inputText styleClass="datepicker"  value="#{staticBean.endDate}"/>
+                        </div>
+
+                    </div>
+                    <div class="floatleft">
+                        <div class="rowElem noborder pb0">
+                            <label class="topLabel">Status</label>
+                            <label style="margin-left: -90px;" class="topLabel">Time Slot</label>
+                        </div>
+                    </div>
+                   <div class="floatleft" >
+                  <h:selectOneMenu value="#{staticBean.status}">
+                    <f:selectItem  itemLabel="All" itemValue="All"></f:selectItem>
+                    <f:selectItem  itemLabel="Used" itemValue="Used"></f:selectItem>
+                </h:selectOneMenu>      
+                <h:selectOneMenu value="#{staticBean.timeTableId}">
+                    <f:selectItem  itemLabel="All" itemValue="All"></f:selectItem>
+                    <f:selectItem  itemLabel="T1: 7:30 - 9:30" itemValue="T1"></f:selectItem>
+                    <f:selectItem  itemLabel="T2: 9:30 - 11:30" itemValue="T2"></f:selectItem>
+                    <f:selectItem  itemLabel="T3: 13:30 - 15:30" itemValue="T3"></f:selectItem>
+                    <f:selectItem  itemLabel="T4: 15:30 - 17:30" itemValue="T4"></f:selectItem>
+                </h:selectOneMenu>
+                       <h:commandButton value="Search" action="#{staticBean.searchStatic()}"  styleClass="greyishBtn submitForm"/>
+                    </div>
+                    <div class="fix"></div>
+                </div>
+            </fieldset>
+         </h:form>
+        <!-- ALL USERS TABLE  -->
+        <div>
+        <h:form id="frmUser">
+            <div class="table">
+                <div class="head"><h5 class="iFrames">Sign List </h5></div>
+                <table cellpadding="0" cellspacing="0" border="0" class="display" id="example">
+                    <thead>
+                        <tr>
+                            <th>Lab ID</th>
+                            <th> Times </th>
+                            <th> Description </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <ui:repeat value="#{staticBean.viewStatic()}" var="statics">
+                            <tr>
+                                <td class="center">
+                                     #{statics.lab.id}
+                                </td>
+                                <td class="center"> <b> #{statics.count} </b> </td>
+                                <td class="center">
+                                      <h:commandLink value="" action="#{labBean.goToLabInfo}" actionListener="#{labBean.getLabByID(statics.lab.id)}">
+                                         <input type="button" value="VIEW" class="blueBtn" />
+                                     </h:commandLink>
+                                </td>
+                            </tr>
+                        </ui:repeat>
+                    </tbody>
+                </table>
+            </div>
+         </h:form>
+        </div>
+<!-- EXP USERS  -->
+        </div>
+        <div class="fix"></div>
+    </div>
+ </ui:define>
+</ui:composition>

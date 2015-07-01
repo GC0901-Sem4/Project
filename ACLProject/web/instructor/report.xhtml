@@ -1,0 +1,82 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns="http://www.w3.org/1999/xhtml"
+                template="../cdn/template/template.xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:c="http://java.sun.com/jsp/jstl/core" >
+    <ui:define name="header">
+    </ui:define>
+<ui:define name="wrapper">
+    <div class="wrapper">
+        <!-- Left navigation -->
+        <div class="leftNav">
+                 <ul id="menu">
+                    <li class="login"><a  href="#{request.contextPath}/faces/instructor/freeLab.xhtml" title="" ><span>Free Lab</span>
+                        </a>
+                    </li>
+                    <li class="files"><a href="#{request.contextPath}/faces/instructor/mySign.xhtml" title=""><span>My Sign </span></a></li>
+                    <li class="graphs"><a class="active" href="#{request.contextPath}/faces/instructor/report.xhtml" title=""><span>Report</span></a></li>
+                    <li class="cal"><a href="#{request.contextPath}/faces/instructor/myReportList.xhtml" title=""><span> My Report </span></a></li>
+                </ul>
+        </div>
+        <!-- Content -->
+        <div class="content">
+                <!-- NOTIFY ERROR -->
+                       <h:panelGroup rendered="#{reportBean.message.hasInfo}">
+                           <div class="nNote nInformation hideit">
+                               <p><strong>INFORMATION: </strong>#{reportBean.message.print}.</p>
+                           </div>
+                       </h:panelGroup>
+                       <h:panelGroup rendered="#{reportBean.message.hasError}">
+                           <div class="nNote nFailure hideit">
+                               <p><strong>FAILURE: </strong>#{reportBean.message.print}</p>
+                           </div>
+                       </h:panelGroup>
+                       <h:panelGroup rendered="#{reportBean.message.hasSuccess}">
+                           <div class="nNote nSuccess hideit">
+                               <p><strong>SUCCESS: </strong>  #{reportBean.message.print} </p>
+                           </div>
+                       </h:panelGroup>
+                
+        <!-- ALL USERS TABLE  -->
+        <div>
+        <h:form id="frmReport" styleClass="mainForm">
+             <div class="widget">
+                            <div class="head"><h5 class="iLocked2">Send Report </h5></div>
+                       <div class="rowElem noborder">
+                                <label style="font-weight: bold"> Device </label>
+                                <div class="formRight">
+                                    <h:selectOneMenu value="#{reportBean.deviceId}">
+                                        <f:selectItems value="#{deviceBean.mapDevice}" />
+                                    </h:selectOneMenu>
+                                </div>
+                                <div class="fix"></div>
+                        </div>
+                            <div class="rowElem">
+                                <label style="font-weight: bold"> Title </label>
+                                <div class="formRight">
+                                <h:inputText  value="#{reportBean.title}" styleClass="validate[required,maxSize[10]]"/>
+                                </div>
+                                <div class="fix"></div>
+                            </div>
+                          
+                               <div class="rowElem">
+                                <label style="font-weight: bold"> Content  </label>
+                                <div class="formRight">
+                                    <h:inputTextarea id="content" styleClass="validate[required,maxSize[140]]"  value="#{reportBean.content}"/>
+                                </div>
+                                <div class="fix"></div>
+                            </div>
+                            <h:commandButton id="submit" value="SEND" action="#{reportBean.doReport()}" styleClass="greyishBtn submitForm"/>
+                            <div class="fix"></div>
+            </div>
+         </h:form>
+        </div>
+<!-- EXP USERS  -->
+        </div>
+        <div class="fix"></div>
+    </div>
+ </ui:define>
+</ui:composition>
