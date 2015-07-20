@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Aug 18, 2012 5:14:49 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="pojo.Group" table="[Group]" schema="dbo" catalog="E_Administration">
+        <id name="id" type="string">
+            <column name="Id" length="15" />
+            <generator class="assigned" />
+        </id>
+        <property name="name" type="text">
+            <column name="Name" not-null="true" />
+        </property>
+        <property name="description" type="text">
+            <column name="Description" />
+        </property>
+        <set name="permissions" inverse="true">
+            <key>
+                <column name="GroupID" length="15" />
+            </key>
+            <one-to-many class="pojo.Permission" />
+        </set>
+    </class>
+</hibernate-mapping>

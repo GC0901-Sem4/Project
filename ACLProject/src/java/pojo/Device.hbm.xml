@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Aug 18, 2012 5:14:49 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="pojo.Device" table="Device" schema="dbo" catalog="E_Administration">
+        <id name="id" type="int">
+            <column name="Id"  />
+            <generator class="native" />
+        </id>
+        <many-to-one name="lab" class="pojo.Lab" fetch="select">
+            <column name="LabID" length="15" />
+        </many-to-one>
+        <property name="name" type="text">
+            <column name="Name" not-null="true" />
+        </property>
+        <property name="createDate" type="timestamp">
+            <column name="CreateDate" length="23" />
+        </property>
+        <property name="warranty" type="timestamp">
+            <column name="Warranty" length="23" />
+        </property>
+        <property name="description" type="text">
+            <column name="Description" />
+        </property>
+        <property name="endWarranty" type="java.lang.Boolean">
+            <column name="endWarranty" />
+        </property>
+        <property name="isProlem" type="java.lang.Boolean">
+            <column name="isProlem" />
+        </property>
+        <property name="status" type="string" insert="false">
+            <column name="Status" length="15" not-null="true" />
+        </property>
+        <set name="reports" inverse="true">
+            <key>
+                <column name="DeviceID" length="15" />
+            </key>
+            <one-to-many class="pojo.Report" />
+        </set>
+    </class>
+</hibernate-mapping>
